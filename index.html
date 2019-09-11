@@ -46,14 +46,17 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/assets/js/msgStyle.js"></script>
-    <script>
+    <script type="module">
+        import { getMsgStyle } from "./assets/js/msgStyle.js";
+
         $(function() {
             const socket = io.connect();
             const $form = $("#messForm");
             const $name = $("#name");
             const $message = $("#message");
             const $all_messages = $("#all_mess");
+
+            const msgStyle = getMsgStyle();
             const clearStr = (el) => $.trim(el.val());
             const isEmpty = (el) => el.val().length === 0;
 
@@ -66,14 +69,14 @@
                 } else if (isEmpty($message)) {
                     $message.focus();
                 } else {
-                    socket.emit('send message', {message: $message.val(), name: $name.val(), msgColor: msgStyle});
+                    socket.emit('send message', {message: $message.val(), name: $name.val(), msgStyle: msgStyle});
                     $message.val('');
                 }
                 event.preventDefault();
             });
 
             socket.on('add message', (data) => {
-                $all_messages.append("<div class=\"alert alert-" + data.msgColor + "\"><b>" + data.name + ":</b> " + data.msg + "</div>");
+                $all_messages.append("<div class=\"alert alert-" + data.msgStyle + "\"><b>" + data.name + ":</b> " + data.msg + "</div>");
             });
 
             socket.on('change name', () => {

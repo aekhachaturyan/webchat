@@ -23,8 +23,6 @@ io.sockets.on('connection', (socket) => {
     });
 
     socket.on('send message', (data) => {
-        // На самом деле нужно проверять, что нам поступило на сервер.
-        // Ведь js можно и отключить :)
         const name = data.name;
         if (!users.get(socket) || users.get(socket) === name) {
             if (!users.get(socket)) {
@@ -40,10 +38,10 @@ io.sockets.on('connection', (socket) => {
                     socket.emit('change name', {});
                 } else {
                     users.set(socket, data.name);
-                    io.sockets.emit('add message', {msg: data.message, name: data.name, msgColor: data.msgColor});
+                    io.sockets.emit('add message', {msg: data.message, name: data.name, msgStyle: data.msgStyle});
                 }
             } else {
-                io.sockets.emit('add message', {msg: data.message, name: data.name, msgColor: data.msgColor});
+                io.sockets.emit('add message', {msg: data.message, name: data.name, msgStyle: data.msgStyle});
             }
         } else {
             socket.emit('change name', {});
