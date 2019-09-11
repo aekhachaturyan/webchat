@@ -8,31 +8,30 @@ server.listen(3000, '127.0.0.1', () => {
 });
 
 app.use('/assets', express.static('assets'));
-app.get('/messages', (request, response) => {
+app.get('/', (request, response) => {
     response.sendFile(__dirname + '/index.html');
 });
 
 let users = new Map(); // socket : username
-let connections = []; // array of connections at this moment
 
 io.sockets.on('connection', (socket) => {
     console.log('Connected');
-    connections.push(socket);
 
     socket.on('disconnect', (data) => {
-        connections.splice(connections.indexOf(socket), 1);
+        console.log("Disconnected" + (users.get(socket) ? ' ' + users.get(socket) : ""));
         users.delete(socket);
-        console.log("Disconnected");
     });
 
     socket.on('send message', (data) => {
-        if (!users.get(socket) || users.get(socket) === data.name) {
+        // На самом деле нужно проверять, что нам поступило на сервер.
+        // Ведь js можно и отключить :)
+        const name = data.name;
+        if (!users.get(socket) || users.get(socket) === name) {
             if (!users.get(socket)) {
-                const name = data.name;
                 let nameIsExists = false;
                 for (let user of users) {
                     let username = user[1];
-                    if (username === data.name) { // [['socket_value', 'username'], ..]
+                    if (username === name) {
                         nameIsExists = true;
                         break;
                     }

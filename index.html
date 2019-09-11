@@ -54,9 +54,13 @@
             const $name = $("#name");
             const $message = $("#message");
             const $all_messages = $("#all_mess");
-            const isEmpty = (el) => $.trim(el.val()) === "";
+            const clearStr = (el) => $.trim(el.val());
+            const isEmpty = (el) => el.val().length === 0;
 
             $form.submit((event) => {
+                $name.val(clearStr($name));
+                $message.val(clearStr($message));
+
                 if (isEmpty($name)) {
                     $name.focus();
                 } else if (isEmpty($message)) {
