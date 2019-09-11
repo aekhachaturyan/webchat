@@ -30,8 +30,9 @@ io.sockets.on('connection', (socket) => {
             if (!users.get(socket)) {
                 const name = data.name;
                 let nameIsExists = false;
-                for (let param of users) {
-                    if (param[1] === data.name) {
+                for (let user of users) {
+                    let username = user[1];
+                    if (username === data.name) { // [['socket_value', 'username'], ..]
                         nameIsExists = true;
                         break;
                     }

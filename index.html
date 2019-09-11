@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
     <title>Web Chat</title>
     <style>
@@ -54,6 +54,7 @@
             const $name = $("#name");
             const $message = $("#message");
             const $all_messages = $("#all_mess");
+            const isEmpty = (el) => $.trim(el.val()) === "";
 
             $form.submit((event) => {
                 if (isEmpty($name)) {
@@ -74,8 +75,6 @@
             socket.on('change name', () => {
                 $name.val('').focus();
             });
-
-            const isEmpty = (el) => $.trim(el.val()) === "";
         });
     </script>
 </body>
